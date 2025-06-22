@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Saved for Later</title>
+</head>
+<body>
+    <h1>💾 Saved for Later</h1>
+
+    <div th:if="${savedItems.isEmpty()}">
+        <p>You have no saved items.</p>
+    </div>
+
+    <div th:each="item : ${savedItems}" style="border: 1px dashed #888; margin: 10px; padding: 10px;">
+        <img th:src="@{${item.imageUrl}}" width="150" />
+        <h3 th:text="${item.name}">Item Name</h3>
+        <p>₹<span th:text="${item.price}">0</span></p>
+
+        <a th:href="@{'/move-to-cart/' + ${item.id}}">Move to Cart</a> |
+        <a th:href="@{'/remove-from-saved/' + ${item.id}}" style="color: red;">Remove</a>
+    </div>
+
+    <br>
+    <a href="/">← Back to Shopping</a>
+</body>
+</html>

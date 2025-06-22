@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Cart</title>
+</head>
+<body>
+    <h1>🛒 Your Cart</h1>
+
+    <div th:if="${cartItems.isEmpty()}">
+        <p>Your cart is empty.</p>
+    </div>
+
+    <div th:each="item : ${cartItems}">
+        <img th:src="@{${item.imageUrl}}" width="150" alt="Image"/>
+        <h3 th:text="${item.name}">Name</h3>
+        <p>Price: ₹<span th:text="${item.price}">0</span></p>
+
+        <a th:href="@{'/remove-from-cart/' + ${item.id}}">Remove from Cart</a>
+        <a th:href="@{'/save-for-later/' + ${item.id}}">Save for Later</a>
+        <hr>
+    </div>
+
+    <h2>Total: ₹<span th:text="${totalPrice}">0</span></h2>
+
+    <a href="/">🏠 Continue Shopping</a>
+    <a href="/saved">💾 View Saved for Later</a>
+    <a href="/checkout">🛍️ Checkout</a>
+</body>
+</html>
