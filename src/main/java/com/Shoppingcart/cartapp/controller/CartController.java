@@ -7,7 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.Shoppingcart.cartapp.model.Order;
 import com.Shoppingcart.cartapp.model.Product;
 import com.Shoppingcart.cartapp.service.ShoppingCartService;
 
@@ -73,6 +77,38 @@ public class CartController {
     public String removeFromSaved(@PathVariable int id) {
         cartService.removeFromSaved(id);
         return "redirect:/saved";
+    }
+
+    @GetMapping("/checkout")
+    public String checkout(Model model, RedirectAttributes redirectAttributes) {
+        if (cartService.getCartItems().isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Your cart is empty. Please add items before checkout.");
+            return "redirect:/cart";
+        }
+
+        model.addAttribute("total", cartService.getPrice());
+        return "checkout";
+    }
+
+    @PostMapping("/place-order")
+    public String placeOrder(@RequestParam String name,
+            @RequestParam String address,
+            @RequestParam String phone,
+            Model model) {
+
+        Order order = new Order();
+        order.setName(name);
+        order.setAddress(address);
+        order.setPhone(phone);
+
+        model.addAttribute("order", order);
+        model.addAttribute("cartItems", cartService.getCartItems());
+        model.addAttribute("total", cartService.getPrice());
+
+        // Clear cart after placing order
+        cartService.getCartItems().clear();
+
+        return "confirmation";
     }
 
 }

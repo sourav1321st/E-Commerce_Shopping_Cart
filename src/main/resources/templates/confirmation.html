@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Placed</title>
+</head>
+<body>
+    <h1>✅ Thank you for your order!</h1>
+
+    <p><strong>Name:</strong> <span th:text="${order.name}"></span></p>
+    <p><strong>Address:</strong> <span th:text="${order.address}"></span></p>
+    <p><strong>Phone:</strong> <span th:text="${order.phone}"></span></p>
+
+    <h3>Your Order:</h3>
+    <ul>
+        <li th:each="item : ${cartItems}">
+            <span th:text="${item.name}"></span> - ₹<span th:text="${item.price}"></span>
+        </li>
+    </ul>
+
+    <p><strong>Total Paid:</strong> ₹<span th:text="${total}"></span></p>
+
+    <br>
+    <a href="/">Continue Shopping</a>
+</body>
+</html>
